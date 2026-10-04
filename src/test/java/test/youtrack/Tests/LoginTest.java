@@ -1,20 +1,17 @@
 package test.youtrack.Tests;
 
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import test.youtrack.Pages.LoginPage;
-import test.youtrack.Base.BaseTest;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static test.youtrack.Data.DataTest.VALID_USERNAME;
-import static test.youtrack.Data.DataTest.VALID_PASSWORD;
+import static test.youtrack.Data.DataLogPass.VALID_USERNAME;
+import static test.youtrack.Data.DataLogPass.VALID_PASSWORD;
 
 public class LoginTest extends BaseTest {
     @Test

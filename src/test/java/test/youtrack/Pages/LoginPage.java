@@ -16,9 +16,9 @@ public class LoginPage {
 
     private final By passwordInput = By.id("password");
 
-    private final By loginButton = By.cssSelector("[data-test='login-button']");
+    private final By loginButton = By.xpath("//*[@data-test='login-button']");
 
-    private final By errorMessage = By.cssSelector("[data-test='error-message']");
+    private final By errorMessage = By.xpath("//*[@data-test='error-message']");
 
 
     public LoginPage(WebDriver driver) {
