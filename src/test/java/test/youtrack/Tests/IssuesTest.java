@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import test.youtrack.Pages.IssuesPage;
 import test.youtrack.Pages.LoginPage;
-import test.youtrack.Pages.DashboardPage;
 import static test.youtrack.Data.DataLogPass.VALID_USERNAME;
 import static test.youtrack.Data.DataLogPass.VALID_PASSWORD;
 
