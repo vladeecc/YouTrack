@@ -11,8 +11,6 @@ public class DashboardPage {
     private final WebDriver driver;
     private final WebDriverWait wait;
 
-    private final By dashboardLink = By.xpath("//a[@data-test='ring-link' and @href='dashboard']");
-
     private final By newDashboardButton = By.xpath("//*[@data-test='new-dashboard-button']");
 
     private final By addWidgetButton = By.xpath("//*[@data-test='add-widget-button']");
