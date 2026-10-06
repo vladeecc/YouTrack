@@ -66,15 +66,7 @@ public class LoginTest extends BaseTest {
         assertFalse(driver.getCurrentUrl().contains("/oauth"), "Пользователь не должен быть авторизован без password");
 
     }
-    @Test
-    void testScreenshot() {
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login("admin1", VALID_PASSWORD);
-        String errorMessage = loginPage.geterrorMessage();
-        System.out.println("Сообщение об ошибке: " + errorMessage);
-        assertTrue(false, "Должен появиться скриншот");
 
-    }
 
 }
 

@@ -1,7 +1,6 @@
 package test.youtrack.Extensions;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -10,36 +9,54 @@ import org.openqa.selenium.WebDriver;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.function.Supplier;
 
 public class ScreenshotExtension implements TestWatcher {
 
-    private final WebDriver driver;
+    private final Supplier<WebDriver> driverSupplier;
 
-    public ScreenshotExtension(WebDriver driver) {
-        this.driver = driver;
+    public ScreenshotExtension(Supplier<WebDriver> driverSupplier) {
+        this.driverSupplier = driverSupplier;
     }
 
     @Override
-    public void testFailed (ExtensionContext context, Throwable cause){
+    public void testFailed(ExtensionContext context, Throwable cause) {
+
+        WebDriver driver = driverSupplier.get();
+
         if (driver == null) {
             return;
         }
-    try {
-        byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-        Path directory = Path.of("screenshots");
-        Files.createDirectories(directory);
 
-        String testName = context.getDisplayName().replaceAll("[^a-zA-Z0-9-_]", "_");
+        try {
+            Path screenshotDirectory =
+                    Paths.get("target", "screenshots");
 
-        Path file = directory.resolve(testName + ".png");
+            Files.createDirectories(screenshotDirectory);
 
-        Files.write(file, screenshot);
+            String testName = context.getDisplayName()
+                    .replaceAll("[^a-zA-Z0-9-_]", "_");
 
-        System.out.println("Скриншот сохранен");
+            Path screenshotPath =
+                    screenshotDirectory.resolve(testName + ".png");
 
-    } catch (IOException e) {
-            System.out.println("Ошибка сохранения скриншота: " + e.getMessage());
+            byte[] screenshot =
+                    ((TakesScreenshot) driver)
+                            .getScreenshotAs(OutputType.BYTES);
 
+            Files.write(screenshotPath, screenshot);
+
+            System.out.println(
+                    "Скриншот сохранен: "
+                            + screenshotPath.toAbsolutePath()
+            );
+
+        } catch (IOException e) {
+            System.out.println(
+                    "Ошибка сохранения скриншота: "
+                            + e.getMessage()
+            );
         }
     }
 }
