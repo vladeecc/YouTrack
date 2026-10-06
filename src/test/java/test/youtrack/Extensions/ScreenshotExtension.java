@@ -1,7 +1,7 @@
 package test.youtrack.Extensions;
 
+import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -12,7 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.function.Supplier;
 
-public class ScreenshotExtension implements TestWatcher {
+public class ScreenshotExtension implements AfterTestExecutionCallback {
 
     private final Supplier<WebDriver> driverSupplier;
 
@@ -21,7 +21,11 @@ public class ScreenshotExtension implements TestWatcher {
     }
 
     @Override
-    public void testFailed(ExtensionContext context, Throwable cause) {
+    public void afterTestExecution(ExtensionContext context) {
+
+        if (context.getExecutionException().isEmpty()) {
+            return;
+        }
 
         WebDriver driver = driverSupplier.get();
 
@@ -35,11 +39,18 @@ public class ScreenshotExtension implements TestWatcher {
 
             Files.createDirectories(screenshotDirectory);
 
-            String testName = context.getDisplayName()
-                    .replaceAll("[^a-zA-Z0-9-_]", "_");
+            String className =
+                    context.getRequiredTestClass().getSimpleName();
+
+            String testName =
+                    context.getDisplayName()
+                            .replaceAll("[^a-zA-Z0-9-_]", "_");
+
+            String fileName =
+                    className + "_" + testName + ".png";
 
             Path screenshotPath =
-                    screenshotDirectory.resolve(testName + ".png");
+                    screenshotDirectory.resolve(fileName);
 
             byte[] screenshot =
                     ((TakesScreenshot) driver)
@@ -53,6 +64,7 @@ public class ScreenshotExtension implements TestWatcher {
             );
 
         } catch (IOException e) {
+
             System.out.println(
                     "Ошибка сохранения скриншота: "
                             + e.getMessage()

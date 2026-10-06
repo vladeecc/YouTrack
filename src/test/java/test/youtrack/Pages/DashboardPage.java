@@ -13,8 +13,6 @@ public class DashboardPage {
 
     private final By dashboardLink = By.xpath("//a[@data-test='ring-link' and @href='dashboard']");
 
-    private final By dashboardTitle = By.xpath("//a[@href='dashboard' and text()='Dashboards']");
-
     private final By newDashboardButton = By.xpath("//*[@data-test='new-dashboard-button']");
 
     private final By addWidgetButton = By.xpath("//*[@data-test='add-widget-button']");
@@ -26,16 +24,8 @@ public class DashboardPage {
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
-    public void openDashboard() {
-        wait.until(ExpectedConditions.elementToBeClickable(dashboardLink)).click();
-    }
-
-    public boolean isDashboardDisplayed() {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(dashboardTitle)).isDisplayed();
-    }
-
-    public String getDashboardTitle() {
-        return wait.until( ExpectedConditions.visibilityOfElementLocated(dashboardTitle) ).getText();
+    public void clickNewDashboard() {
+        wait.until(ExpectedConditions.elementToBeClickable(newDashboardButton)).click();
     }
 
     public boolean isNewDashboardButtonDisplayed() {
