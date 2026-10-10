@@ -12,9 +12,9 @@ public class LoginPage {
 
     private final WebDriverWait wait;
 
-    private final By usernameInput = By.id("username");
+    private final By usernameInput = By.xpath("//*[@data-test='username-field']");
 
-    private final By passwordInput = By.id("password");
+    private final By passwordInput = By.xpath("//*[@data-test='password-field']");
 
     private final By loginButton = By.xpath("//*[@data-test='login-button']");
 
