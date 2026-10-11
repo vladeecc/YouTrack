@@ -4,20 +4,24 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import test.youtrack.Pages.IssuesPage;
 import test.youtrack.Pages.LoginPage;
-import static test.youtrack.Data.DataLogPass.VALID_USERNAME;
-import static test.youtrack.Data.DataLogPass.VALID_PASSWORD;
+
 
 public class IssuesTest extends BaseTest {
 
-    @Test
-    void userShouldBeAbleToOpenIssues() {
+    @ParameterizedTest
+    @CsvFileSource(
+            resources = "/login.csv",
+            numLinesToSkip = 1 )
+    void userShouldBeAbleToOpenIssues(String username, String password) {
 
         LoginPage loginPage = new LoginPage(driver);
         IssuesPage issuesPage = new IssuesPage(driver);
 
-        loginPage.login(VALID_USERNAME, VALID_PASSWORD);
+        loginPage.login(username, password);
 
         issuesPage.openIssues();
 

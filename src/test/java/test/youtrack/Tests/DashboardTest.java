@@ -4,20 +4,23 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import test.youtrack.Pages.LoginPage;
 import test.youtrack.Pages.DashboardPage;
-import static test.youtrack.Data.DataLogPass.VALID_USERNAME;
-import static test.youtrack.Data.DataLogPass.VALID_PASSWORD;
 
 public class DashboardTest extends BaseTest {
 
-    @Test
-    void dashboardShouldBeDisplayedAfterLogin() {
+    @ParameterizedTest
+    @CsvFileSource(
+            resources = "/login.csv",
+            numLinesToSkip = 1 )
+    void dashboardShouldBeDisplayedAfterLogin(String username, String password) {
 
         LoginPage loginPage = new LoginPage(driver);
         DashboardPage dashboardPage = new DashboardPage(driver);
 
-        loginPage.login(VALID_USERNAME, VALID_PASSWORD);
+        loginPage.login(username, password);
 
         assertTrue(
                 dashboardPage.isNewDashboardButtonDisplayed(),
@@ -25,13 +28,16 @@ public class DashboardTest extends BaseTest {
         );
     }
 
-    @Test
-    void newDashboardTest() {
+    @ParameterizedTest
+    @CsvFileSource(
+            resources = "/login.csv",
+            numLinesToSkip = 1 )
+    void newDashboardTest(String username, String password) {
 
         LoginPage loginPage = new LoginPage(driver);
         DashboardPage dashboardPage = new DashboardPage(driver);
 
-        loginPage.login(VALID_USERNAME, VALID_PASSWORD);
+        loginPage.login(username, password);
 
         assertTrue(
                 dashboardPage.isAddWidgetButtonDisplayed(),

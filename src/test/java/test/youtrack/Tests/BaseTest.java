@@ -8,7 +8,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import test.youtrack.Extensions.ScreenshotExtension;
 
-import static test.youtrack.Data.DataLogPass.BASE_URL;
 
 public class BaseTest {
     protected WebDriver driver;
@@ -20,7 +19,7 @@ public class BaseTest {
     void setUp() {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        driver.get(BASE_URL);
+        driver.get("http://localhost:8080");
     }
 
     @AfterEach

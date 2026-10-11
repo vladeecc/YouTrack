@@ -1,6 +1,8 @@
 package test.youtrack.Tests;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import test.youtrack.Pages.AgileBoardsPage;
 import test.youtrack.Pages.LoginPage;
 
@@ -10,13 +12,16 @@ import static test.youtrack.Data.DataLogPass.VALID_USERNAME;
 
 public class AgileBoardsTest extends BaseTest {
 
-    @Test
-    void userShouldBeAbleToOpenAgileBoards() {
+    @ParameterizedTest
+    @CsvFileSource(
+            resources = "/login.csv",
+            numLinesToSkip = 1 )
+    void userShouldBeAbleToOpenAgileBoards(String username, String password) {
 
         LoginPage loginPage = new LoginPage(driver);
         AgileBoardsPage agileBoardsPage = new AgileBoardsPage(driver);
 
-        loginPage.login(VALID_USERNAME, VALID_PASSWORD);
+        loginPage.login(username, password);
 
         agileBoardsPage.openAgileBoards();
 

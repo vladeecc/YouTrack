@@ -3,6 +3,7 @@ package test.youtrack.Tests;
 import org.junit.jupiter.api.Test;
 
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import test.youtrack.Pages.LoginPage;
@@ -10,31 +11,38 @@ import test.youtrack.Pages.LoginPage;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static test.youtrack.Data.DataLogPass.VALID_USERNAME;
-import static test.youtrack.Data.DataLogPass.VALID_PASSWORD;
 
 public class LoginTest extends BaseTest {
-    @Test
-    void succesfulLogin() {
+    @ParameterizedTest
+    @CsvFileSource(
+            resources = "/login.csv",
+            numLinesToSkip = 1 )
+    void succesfulLogin(String username, String password) {
             LoginPage loginPage = new LoginPage(driver);
-            loginPage.login(VALID_USERNAME, VALID_PASSWORD);
+            loginPage.login(username, password);
             String currentUrl = driver.getCurrentUrl();
             System.out.println("URL после авторизации: " + currentUrl);
             assertTrue(currentUrl.startsWith("http://localhost:8080/oauth"),
                     "После успешной авторизации должен быть выполнен переход на OAuth");
         }
-    @Test
-    void invalidPassword() {
+    @ParameterizedTest
+    @CsvFileSource(
+            resources = "/login.csv",
+            numLinesToSkip = 1 )
+    void invalidPassword(String username) {
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(VALID_USERNAME, "admin12");
+        loginPage.login(username, "admin12");
         String errorMessage = loginPage.geterrorMessage();
         System.out.println("Сообщение об ошибке: " + errorMessage);
         assertTrue(errorMessage.length() > 0, "При неверном пароле должна отображаться ошибка");
     }
-    @Test
-    void invalidLogin() {
+    @ParameterizedTest
+    @CsvFileSource(
+            resources = "/login.csv",
+            numLinesToSkip = 1 )
+    void invalidLogin(String password) {
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.login("admin1", VALID_PASSWORD);
+        loginPage.login("admin1", password);
         String errorMessage = loginPage.geterrorMessage();
         System.out.println("Сообщение об ошибке: " + errorMessage);
         assertTrue(errorMessage.length() > 0, "При неверном логине должна отображаться ошибка");
@@ -49,18 +57,24 @@ public class LoginTest extends BaseTest {
         System.out.println("Ошибка: " + errorMessage);
         assertTrue(errorMessage.length() > 0, "При неверных данных должна появиться ошибка");
     }
-    @Test
-    void emptyUsername() {
+    @ParameterizedTest
+    @CsvFileSource(
+            resources = "/login.csv",
+            numLinesToSkip = 1 )
+    void emptyUsername(String password) {
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.login("", VALID_PASSWORD);
+        loginPage.login("", password);
         String errorMessage = loginPage.geterrorMessage();
         System.out.println("URL после отправки формы: " + driver.getCurrentUrl());
         assertFalse(driver.getCurrentUrl().contains("/oauth"), "Пользователь не должен быть авторизован без username");
     }
-    @Test
-    void emptyPassword() {
+    @ParameterizedTest
+    @CsvFileSource(
+            resources = "/login.csv",
+            numLinesToSkip = 1 )
+    void emptyPassword(String username) {
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.login(VALID_USERNAME, "");
+        loginPage.login(username, "");
         String errormessage = loginPage.geterrorMessage();
         System.out.println("URL после отправки формы: " + driver.getCurrentUrl());
         assertFalse(driver.getCurrentUrl().contains("/oauth"), "Пользователь не должен быть авторизован без password");
